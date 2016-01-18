@@ -79,5 +79,9 @@ setup(
     entry_points='''
         [ckan.plugins]
         metadataharvest=ckanext.metadataharvest.plugin:MetadataharvestPlugin
+        [ckan.test_plugins]
+            [paste.paster_command]
+            harvest=ckanext.metadataharvest.commands.harvest:Harvest
+
     ''',
 )
