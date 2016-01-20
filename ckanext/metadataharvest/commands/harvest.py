@@ -108,20 +108,22 @@ class Harvest(CkanCommand):
             check_tags(local, remote, update_data)
             check_extras(local, remote, update_data)
 
-            if local.get('author') != remote.get('maintainer'):
-                update_data['author'] = remote.get('maintainer')
-
-            if local.get('maintainer') != remote.get('editor'):
-                # Editor (metadata) => Author (datakk)
+            #NB! these values are mixed up as 'maintainer' on metadata is actually contact person.
+            #According to mapping rules, contact person should be stored in author field and editing
+            # value should be stored in amaintainer field. Therefore:
+            #  remote        local
+            #  editor     -> maintainer
+            #  maintainer -> author
+            if remote.get('editor') != local.get('maintainer'):
                 update_data['maintainer'] = remote.get('editor')
 
-            if local.get('maintainer_email') != remote.get('maintainer_email'):
-                update_data['maintainer_email'] = remote.get('maintainer_email')
+            if remote.get('maintainer') != local.get('author'):
+                update_data['author'] = remote.get('maintainer')
 
-            if local.get('maintainer') != remote.get('maintainer'):
-                update_data['maintainer'] = remote.get('maintainer')
+            if remote.get('maintainer_email') != local.get('author_email'):
+                update_data['author_email'] = remote.get('maintainer_email')
 
-            if local.get('notes') != remote.get('notes'):
+            if remote.get('notes') != local.get('notes'):
                 update_data['notes'] = remote.get('notes')
 
             if(local != update_data):
