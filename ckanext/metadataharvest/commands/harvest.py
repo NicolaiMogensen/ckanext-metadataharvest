@@ -108,12 +108,12 @@ class Harvest(CkanCommand):
             check_tags(local, remote, update_data)
             check_extras(local, remote, update_data)
 
-            if local.get('maintainer') != remote.get('maintainer'):
-                update_data['maintainer'] = remote.get('maintainer')
+            if local.get('author') != remote.get('maintainer'):
+                update_data['author'] = remote.get('maintainer')
 
-            if local.get('author') != remote.get('editor'):
+            if local.get('maintainer') != remote.get('editor'):
                 # Editor (metadata) => Author (datakk)
-                update_data['author'] = remote.get('editor')
+                update_data['maintainer'] = remote.get('editor')
 
             if local.get('maintainer_email') != remote.get('maintainer_email'):
                 update_data['maintainer_email'] = remote.get('maintainer_email')
