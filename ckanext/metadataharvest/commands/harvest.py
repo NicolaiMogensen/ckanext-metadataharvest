@@ -23,7 +23,7 @@ class Harvest(CkanCommand):
 
     def _fetch_metadata(self, url):
         api = ckanapi.RemoteCKAN(url)
-        response = api.action.package_search(rows=1000000, q='kkkort:True')
+        response = api.action.package_search(rows=1000000, q='datakk:True')
         return response['results']
 
     def _process(self, remote_data):
@@ -31,10 +31,10 @@ class Harvest(CkanCommand):
         response = get_action('package_search')({}, {'rows': 1000000})
         local_data = response['results']
 
-        def find_by_title(title):
+        def find_by_name(name):
             #Lookup could be optimized, not a problem at the moment
             for ds in local_data:
-                if ds['title'] == title:
+                if ds['name'] == name:
                     return ds
             return None
 
@@ -72,7 +72,7 @@ class Harvest(CkanCommand):
                 update = True
 
             remote_note = remote.get('quality_note')
-            if remote_note != '' and local_extras.get('quality_note') != remote_note:
+            if local_extras.get('quality_note') != remote_note:
                 local_extras['quality_note'] = remote_note
                 update = True
 
@@ -97,9 +97,9 @@ class Harvest(CkanCommand):
 
 
         for remote in remote_data:
-            local = find_by_title(remote['title'])
+            local = find_by_name(remote['name'])
             if local is None:
-                print("Did not find dataset with title {}, skipping".format(remote['title'].encode('utf-8')))
+                # print("Did not find dataset with name {}, skipping".format(remote['name'].encode('utf-8')))
                 continue
 
             #Create deep copy of current data that we can diff for changes afterwards
@@ -126,12 +126,15 @@ class Harvest(CkanCommand):
             if remote.get('notes') != local.get('notes'):
                 update_data['notes'] = remote.get('notes')
 
+            if remote.get('title') != local.get('title'):
+                update_data['title'] = remote.get('title')
+
             if(local != update_data):
-                print("Updating dataset {}".format(remote['title'].encode('utf-8')))
+                print("Updating dataset {}".format(remote['name'].encode('utf-8')))
                 context = {'model':model, 'session':model.Session}
                 get_action('package_update')(context, update_data)
             else:
-                print("No changes detected for dataset {}".format(remote['title'].encode('utf-8')))
+                print("No changes detected for dataset {}".format(remote['name'].encode('utf-8')))
 
 
     def command(self):
