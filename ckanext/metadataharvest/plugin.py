@@ -11,6 +11,20 @@ def get_quality_translation(quality):
     }
     return qualmap.get(quality, '').decode('utf8')
 
+def get_frequency_translation(frequency):
+    #It was decided after import that the default should be '', therefore created
+    #another value for never and mapped current never to an empty string.
+    freqmap = {
+        'daily': 'Dagligt',
+        'weekly': 'Ugentligt',
+        'monthly': 'Månedligt',
+        'biannually': 'Halvårligt',
+        'annually': 'Årligt',
+        'infrequently': 'Sjældent',
+        'never': 'Never',
+    }
+    return freqmap.get(frequency, '').decode('utf8')
+
 def find_extra(extras, key):
     for extra in extras:
         if extra.get('key') == key:
@@ -30,5 +44,6 @@ class MetadataharvestPlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         return { 
             'find_extra': find_extra,
-            'get_quality_translation': get_quality_translation
+            'get_quality_translation': get_quality_translation,
+            'get_frequency_translation': get_frequency_translation
         } 

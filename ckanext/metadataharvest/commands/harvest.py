@@ -113,7 +113,6 @@ class Harvest(CkanCommand):
             check_extras(local, remote, update_data)
 
             #NB! I have fixed the metadata module to fix the mappings
-
             if remote.get('maintainer') != local.get('maintainer'):
                 update_data['maintainer'] = remote.get('maintainer')
 
