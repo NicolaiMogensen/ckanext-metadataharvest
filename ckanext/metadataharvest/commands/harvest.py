@@ -36,6 +36,13 @@ class Harvest(CkanCommand):
                 if ds['name'] == name:
                     return ds
             return None
+        def find_by_title(title):
+            # Lookup could be optimized, not a problem at the moment
+            for ds in local_data:
+                if ds['title'] == title:
+                    return ds
+            return None
+
 
         def extract_extras(extras):
             #Unpacks list of objects to a key/value dict
@@ -84,8 +91,6 @@ class Harvest(CkanCommand):
 
             if update:
                 update_data['extras'] = pack_extras(local_extras)
-                
-
 
         def check_tags(local, remote, update_data):
             #If tags don't match, overwrite with remote tags
@@ -96,7 +101,7 @@ class Harvest(CkanCommand):
 
         #Main()
         for remote in remote_data:
-            local = find_by_name(remote['name'])
+            local = find_by_title(remote['title'])
             if local is None:
                 # print("Did not find dataset with name {}, skipping".format(remote['name'].encode('utf-8')))
                 continue
