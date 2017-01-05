@@ -21,7 +21,7 @@ def get_frequency_translation(frequency):
         'biannually': 'Halvårligt',
         'annually': 'Årligt',
         'infrequently': 'Sjældent',
-        'never': 'Never',
+        'never': 'Never'
     }
     return freqmap.get(frequency, '').decode('utf8')
 

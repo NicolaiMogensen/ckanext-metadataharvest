@@ -4,19 +4,19 @@
   as a workaround, we look for specific keys in extras and display them with custom translations #}
   {% if h.find_extra(pkg_dict.extras, 'update_frequency') %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Update Frequency") }}</th>
+      <th scope="row" class="dataset-label">{{ _("Opdateringsfrekvens") }}</th>
       <td class="dataset-details">{{ h.get_frequency_translation(h.find_extra(pkg_dict.extras, 'update_frequency')) }}</td>
     </tr>
   {% endif %}
   {% if h.find_extra(pkg_dict.extras, 'data_quality') %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Data quality") }}</th>
+      <th scope="row" class="dataset-label">{{ _("Datakvalitet") }}</th>
       <td class="dataset-details">{{ h.get_quality_translation(h.find_extra(pkg_dict.extras, 'data_quality')) }}</td>
     </tr>
   {% endif %}
   {% if h.find_extra(pkg_dict.extras, 'quality_note') %}
     <tr>
-      <th scope="row" class="dataset-label">{{ _("Quality note") }}</th>
+      <th scope="row" class="dataset-label">{{ _("Datakvalitet note") }}</th>
       <td class="dataset-details">{{ h.find_extra(pkg_dict.extras, 'quality_note') }}</td>
     </tr>
   {% endif %}
