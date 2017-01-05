@@ -27,7 +27,6 @@ class Harvest(CkanCommand):
         return response['results']
 
     def _process(self, remote_data):
-
         response = get_action('package_search')({}, {'rows': 1000000})
         local_data = response['results']
 
@@ -55,7 +54,7 @@ class Harvest(CkanCommand):
         def check_extras(local, remote, update_data):
             #Checks and updates extras if changed
 
-            #update_frequecny, data_quality, quality_note are in metadata schema,
+            #update_frequency, data_quality, quality_note are in metadata schema,
             #therefore they are not present in remote extras, but in remote directly
 
             update = False
@@ -95,7 +94,7 @@ class Harvest(CkanCommand):
             if local_tags != remote_tags:
                 update_data['tags'] = [{'state': 'active', 'name': t} for t in remote_tags]
 
-
+        #Main()
         for remote in remote_data:
             local = find_by_name(remote['name'])
             if local is None:
@@ -108,20 +107,16 @@ class Harvest(CkanCommand):
             check_tags(local, remote, update_data)
             check_extras(local, remote, update_data)
 
-            #NB! these values are mixed up as 'maintainer' on metadata is actually contact person.
-            #According to mapping rules, contact person should be stored in author field and editing
-            # value should be stored in amaintainer field. Therefore:
-            #  remote        local
-            #  editor     -> maintainer
-            #  maintainer -> author
-            if remote.get('editor') != local.get('maintainer'):
-                update_data['maintainer'] = remote.get('editor')
+            #NB! I have fixed the metadata module to fix the mappings
 
-            if remote.get('maintainer') != local.get('author'):
-                update_data['author'] = remote.get('maintainer')
+            if remote.get('maintainer') != local.get('maintainer'):
+                update_data['maintainer'] = remote.get('maintainer')
 
-            if remote.get('maintainer_email') != local.get('author_email'):
-                update_data['author_email'] = remote.get('maintainer_email')
+            if remote.get('author') != local.get('author'):
+                update_data['author'] = remote.get('author')
+
+            if remote.get('author_email') != local.get('author_email'):
+                update_data['author_email'] = remote.get('author_email')
 
             if remote.get('notes') != local.get('notes'):
                 update_data['notes'] = remote.get('notes')
